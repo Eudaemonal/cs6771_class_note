@@ -1,0 +1,28 @@
+/* Copyright (c) 2016-2017 Eudaemon <eudaemonal@gmail.com> */
+
+#include <iostream>
+
+#include "test.hpp"
+
+using namespace std;
+
+/*
+for (auto &c : s)
+	c = std::toupper(c);
+	std::cout << s << std::endl;
+
+
+difference forward_list, vector ,array
+difference deque and list
+
+iterator: address, value
+
+discuss ma
+
+*/
+
+int main(int argc, char* argv[]){
+
+    
+    return 0;
+}
