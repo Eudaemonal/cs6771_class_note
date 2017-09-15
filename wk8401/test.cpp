@@ -19,6 +19,7 @@
 #include <tuple>
 #include <string>
 #include <memory>
+#include <algorithm>
 
 namespace gdwg{
 
@@ -55,6 +56,21 @@ namespace gdwg{
 					return false;
 			next_.push_back(std::make_tuple(w, d));
 			return true;
+		}
+
+		/** Delete edge from a node
+			return true if edge is deleted from the node
+			return false if edge with specified weight and destination not found
+		@param 
+		@return
+		*/
+		bool deleteEdge(const E &w, std::shared_ptr<Node<N,E>> d){
+			for(unsigned int i=0; i!=next_.size();++i)
+				if(getWeight(i) == w && getDst(i)==d){
+					next_.erase(next_.begin()+i);
+					return true;
+				}
+			return false;
 		}
 
 		N getData()
@@ -146,7 +162,19 @@ namespace gdwg{
 		}
 
 		void deleteEdge(const N& src, const N& dst, const E& w) noexcept {
-		
+			if(!isNode(src))
+				return;
+			std::shared_ptr<Node<N,E>> s (new Node<N,E>);
+			std::shared_ptr<Node<N,E>> d (new Node<N,E>);
+
+			s = findNode(src);
+			d = findNode(dst);
+
+			s->deleteEdge(w,d);					
+		}
+
+		void clear() noexcept{
+			arr_.clear();
 		}
 
 
@@ -158,6 +186,20 @@ namespace gdwg{
 			return false;	
 		}
 
+		bool isConnected(const N& val, const N& dst) const{
+			if(!isNode(val)||!isNode(dst))
+				throw std::runtime_error("Error: One or two nodes with specified data do not exist.");
+			
+			std::shared_ptr<Node<N,E>> s (new Node<N,E>);
+			std::shared_ptr<Node<N,E>> d (new Node<N,E>);
+			s = findNode(val);
+			d = findNode(dst);
+
+			for(unsigned int i=0;i!=s->getNumEdge(); ++i)
+				if(s->getDst(i) == d)
+					return true;
+			return false;
+		}
 
 		std::shared_ptr<Node<N,E>> findNode(const N &src){
 			for(unsigned int i = 0; i<arr_.size(); ++i){
@@ -174,6 +216,11 @@ namespace gdwg{
 				std::cout << arr_[i]->getData()<<std::endl;
 			}
 		}
+
+		void printEdges(const N& val) const{
+			
+		}
+
 		
 		void printGraph() const{
 			std::cout <<"size: " << arr_.size() << std::endl;
