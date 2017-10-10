@@ -110,6 +110,7 @@ namespace gdwg{
 			if(isNode(val))
 				return false;
 			arr_.push_back(n);
+			
 			return true;
 		}
 		
